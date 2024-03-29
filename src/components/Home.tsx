@@ -1,4 +1,4 @@
-import { Button, Card, CardContent, Grid } from "@mui/material";
+import { Button, Card, CardContent, Grid, ListItemText } from "@mui/material";
 import { useState, useEffect } from "react";
 import Upvote from "@mui/icons-material/ThumbUpOutlined";
 import ResponsiveAppBar from "./ResponsiveAppBar";
@@ -8,6 +8,9 @@ import { createClient } from "@supabase/supabase-js";
 import { supabase } from "../client";
 import { styled } from '@mui/material/styles';
 import { Link } from 'react-router-dom';
+import List from "@mui/material";
+import './Home.css'
+import { Typography } from "@mui/material";
 
 
 //subject to change (ids and event redirect/popup/data)
@@ -150,11 +153,6 @@ const Home: React.FC<HomeProps> = ({ token }) => {
     console.log("Added new event notif");
   };
 
-  //Dev Button Handler
-  const handleTestButtonOnClick = async () => {
-    };
-
-
   //show events on home and formatting the date
   useEffect(() => {
     const fetchEvents = async () => {
@@ -225,92 +223,99 @@ const Home: React.FC<HomeProps> = ({ token }) => {
         callBackClearNotif={clearNotif}
         notifList={notifList}
       />
-      <p>{"Welcome, " + token.user.user_metadata.first_name}</p>
-      <div>
-      {isAdministratorStatus === true && (
-        <p>You are an admin.</p>
-      )}
-      {isAdministratorStatus === false && (
-        <p>You are not an admin.</p>
-      )}
-      {isAdministratorStatus === null && (
-        <p>Admin request waiting for approval.</p>
-      )}
-      </div>
-      <div>
-      {isOrganizerStatus === true && (
-        <p>You are an organizer.</p>
-      )}
-      {isOrganizerStatus === false && (
-        <p>You are not an organizer.</p>
-      )}
-      {isOrganizerStatus === null && (
-        <p>Organizer request waiting for approval.</p>
-      )}
-    </div>
-      <button onClick={handleTestButtonOnClick}>Add Notif Button</button>
-      <div>
-      {!isOrganizerStatus && (
-        <Button
-          variant="contained"
-          onClick={handleBecomeOrganizer}
-          sx={{ mt: 5 }}
-        >
-          Become an Organizer
-        </Button>
-      )}
-      {isOrganizerStatus && ( 
-        <Link to="/organizer">
-          <Button variant="contained" sx={{ mt: 5 }}>
-            Go to Events List
-          </Button>
-        </Link>
-      )}
-    </div>
-      <br/>
-      <br/>
-      <br/>
-      <Grid
-        container
-        spacing={8}
-        direction="row" 
-        justifyContent="center"
-        alignItems="center"
-      >
-        {currentEvents.map((event, index) => (
-          <Grid item xs={12} sm={6} md={4} lg={3} key={index} >
-            <CardContainer sx={{ mb: 5 }} sx={{
-              border: '1px solid black',
-              borderRadius: '4px',
-              padding: '16px',
-              boxSizing: 'border-box',
-            }}>
-              <CardContent>
-                <h2>{event.name}</h2>
-                <p>Event Start: {event.event_start}</p>
-                <p>Description: {event.description}</p>
-              </CardContent>
-            </CardContainer>
-            <div style={{ display: 'flex', justifyContent: 'left' }}>
-              <Button
-                variant="contained"
-                onClick={() => handleJoinEvent(index)}
-                sx={{ mt: 0 }}
-              >
-                Join Event
+      <div className="dashboard">
+        <h1>{"Welcome, " + token.user.user_metadata.first_name}</h1>
+        <div>
+          {isAdministratorStatus === true && (
+            <p>You are an admin.</p>
+          )}
+          {isAdministratorStatus === false && (
+            <p>You are not an admin.</p>
+          )}
+          {isAdministratorStatus === null && (
+            <p>Admin request waiting for approval.</p>
+          )}
+        </div>
+          <div>
+          {isOrganizerStatus === true && (
+            <p>You are an organizer.</p>
+          )}
+          {isOrganizerStatus === false && (
+            <p>You are not an organizer.</p>
+          )}
+          {isOrganizerStatus === null && (
+            <p>Organizer request waiting for approval.</p>
+          )}
+        </div>
+        <div>
+          {!isOrganizerStatus && (
+            <Button
+              variant="contained"
+              onClick={handleBecomeOrganizer}
+              sx={{ mt: 5 }}
+            >
+              Become an Organizer
+            </Button>
+          )}
+          {isOrganizerStatus && ( 
+            <Link to="/organizer">
+              <Button variant="contained" sx={{ mt: 5 }}>
+                Go to Events List
               </Button>
-              {/* <Button
-                variant="contained"
-                disabled
-                onClick={() => handleJoinEvent(index)}
-                sx={{ mt: 0 }}
-              >
-              <p>Upvote Now   </p>
-              </Button> */}
-            </div>
-          </Grid>
-        ))}
-      </Grid>
+            </Link>
+          )}
+        </div>
+      </div>
+      <div className="dashboard">
+        <Grid
+          container
+          spacing={8}
+          direction="row" 
+          justifyContent="flex-start"
+          alignItems="flex-start"
+        >
+          {currentEvents.map((event, index) => (
+            <Grid item xs={12} sm={6} md={4} lg={3} key={index} >
+              <CardContainer sx={{
+                mb: 1,
+                border: '1px solid black',
+                borderRadius: '4px',
+                padding: '6px',
+                boxSizing: 'border-box',
+              }}>
+                <CardContent>
+                  <Typography variant="h6">
+                    <h2>{event.name}</h2>
+                  </Typography>
+                  <Typography>
+                    <p>Event Start: {event.event_start}</p>
+                  </Typography>
+                  <Typography>
+                    <p>Description: {event.description}</p>
+                  </Typography>
+                </CardContent>
+              </CardContainer>
+              <div style={{ display: 'flex', justifyContent: 'left'}}>
+                <Button
+                  variant="contained"
+                  onClick={() => handleJoinEvent(index)}
+                  sx={{ mt: 0 }}
+                >
+                  Join Event
+                </Button>
+                {/* <Button
+                  variant="contained"
+                  disabled
+                  onClick={() => handleJoinEvent(index)}
+                  sx={{ mt: 0 }}
+                >
+                <p>Upvote Now   </p>
+                </Button> */}
+              </div>
+            </Grid>
+          ))}
+        </Grid>
+      </div>
       <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px', padding: '0 20px', border: '10px',  }}>
         <Button
           variant="outlined"
