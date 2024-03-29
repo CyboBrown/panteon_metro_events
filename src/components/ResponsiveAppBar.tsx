@@ -17,7 +17,7 @@ import AdbIcon from "@mui/icons-material/Adb";
 import SimpleBadge from "./SimpleBadge";
 
 const pages = ["Products", "Pricing", "Blog"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const settings = ["Logout"];
 
 interface ResponsiveAppBarProps {
   notifNumber: number;
