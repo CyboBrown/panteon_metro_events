@@ -100,6 +100,17 @@ export const getEvents = async () => {
   return data;
 };
 
+// fetch all events by organizer_id
+export const getOrganizerEvents = async (organizer_id: number) => {
+  let { data, error } = await supabase
+    .from("events")
+    .select("*")
+    .eq("is_cancelled", false)
+    .eq("created_by", organizer_id)
+  if (error) console.log("CRUD Error: " + error);
+  return data;
+};
+
 // fetch user details by user_id
 export const getUser = async (user_id: string) => {
   let { data, error } = await supabase

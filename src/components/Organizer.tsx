@@ -1,6 +1,7 @@
 import { TextField, Button, Grid, Typography, Box, Modal} from '@mui/material';
 import { useEffect, useState } from 'react';
-import { createEvent, getOrganizer } from '../operations';
+import { createEvent, getOrganizer, getOrganizerEvents } from '../operations';
+import EventCard from './EventCard';
 
 
 const style = {
@@ -26,35 +27,37 @@ export default function Organizer({token}) {
   const [eventStartDate, setEventStartDate] = useState('');
   const [eventEndDate, setEventEndDate] = useState('');
   const [user, setUser] = useState(token.user.id);
+  const [orgList, setOrgList] = useState([])
+ 
 
-  // useEffect(() => {
-  //   const fetchEvents = async () => {
-  //     try {
-  //       const eventsData = await getOrganizer();
-  //       setEvents(eventsData.map(event => ({
-  //         ...event,
-  //         event_start: formatDate(event.event_start) 
-  //       }))); 
-  //     } catch (error) {
-  //       console.error('Error fetching events:', error);
-  //     }
-  //   };
-  //   fetchEvents();
-  // }, []);
-
-  const orgID = getOrganizer(token.user.id)
-
-  useEffect(() => {
+  const getOrganizerID = () => {
     getOrganizer(token.user.id)
         .then(organizer => {
-            setUser(organizer[0]); // Extract the first value from the response array
+            setUser(organizer[0]); 
         })
         .catch(console.error);
-}, [])
+  };
+
+  const getEventList = () => {
+      getOrganizerEvents(user.id)
+          .then(orgEventList => {
+              setOrgList(orgEventList);
+          })
+          .catch(console.error);
+  };
+
+  useEffect(() => {
+    getOrganizerID();
+  }, [token])
+
+  useEffect(() => {
+    getEventList();
+  }, [user])
+
+
   
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    console.log(orgID)
-    console.log(getOrganizer(token.user.id))
     createEvent(eventName, eventDescription, eventStartDate, eventEndDate, user.id)
     setEventName('')
     setEventDescription('')
@@ -70,21 +73,25 @@ export default function Organizer({token}) {
     });
   };
 
+  
     return (
     <>
-     {console.log(user.id)}
       <Grid container
         direction="column"
         justifyContent="center"
         alignItems="center">
           <Typography variant="h3">Event List</Typography>
+          
+          <EventCard eventName={orgList[0].name}
+            description={orgList[0].description}
+            startTime={orgList[0].event_start}
+            endTime={orgList[0].event_end}/>
+          
 
         <Button variant="outlined" sx={{mt: 10}}onClick={handleOpen}>Create Event</Button>
         <Modal
           open={open}
-          onClose={handleClose}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description">
+          onClose={handleClose}>
         <Box sx={style}>
         <Typography variant="h4" align="center" gutterBottom>
           Create Event
