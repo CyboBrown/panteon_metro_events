@@ -64,7 +64,6 @@ export default function Organizer({token}) {
     setEventStartDate('')
     setEventEndDate('')
 
-    e.preventDefault();
     console.log({
       eventName,
       eventDescription,
@@ -82,12 +81,21 @@ export default function Organizer({token}) {
         alignItems="center">
           <Typography variant="h3">Event List</Typography>
           
-          <EventCard eventName={orgList[0].name}
-            description={orgList[0].description}
-            startTime={orgList[0].event_start}
-            endTime={orgList[0].event_end}/>
-          
-
+          {orgList ? (
+           <Grid container spacing={-1} justifyContent="center">
+            {orgList.map((event, index) => (
+      <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
+        <EventCard 
+          eventName={event.name}
+          description={event.description}
+          startTime={event.event_start}
+          endTime={event.event_end}
+        />
+      </Grid>
+    ))}
+  </Grid>
+) : ''}
+        
         <Button variant="outlined" sx={{mt: 10}}onClick={handleOpen}>Create Event</Button>
         <Modal
           open={open}
