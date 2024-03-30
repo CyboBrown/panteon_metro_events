@@ -1,0 +1,19 @@
+.title {
+    display: flexbox;
+    text-align: center;
+    padding-top: 2%;
+}
+
+.choices {
+    display: flexbox;
+    text-align: center;
+}
+
+.choice {
+    padding-left: 1%;
+    padding-right: 1%;
+}
+
+Link {
+    text-decoration: none;
+}
