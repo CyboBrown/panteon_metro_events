@@ -105,8 +105,8 @@ export const getOrganizerEvents = async (organizer_id: number) => {
   let { data, error } = await supabase
     .from("events")
     .select("*")
-    .eq("is_cancelled", false)
     .eq("created_by", organizer_id)
+    .order("created_at", { ascending: false })
   if (error) console.log("CRUD Error: " + error);
   return data;
 };
@@ -263,12 +263,13 @@ export const updateEvent = async (
   event_id: number,
   name: string,
   description: string,
-  event_start: string
+  event_start: string,
+  event_end: string
 ) => {
   const { data, error } = await supabase
     .from("events")
-    .update({ name: name, description: description, event_start: event_start })
-    .eq("event_id", event_id)
+    .update({ name: name, description: description, event_start: event_start, event_end: event_end })
+    .eq("id", event_id)
     .select();
   if (error) console.log("CRUD Error: " + error);
   return data;
