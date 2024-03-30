@@ -22,23 +22,13 @@ const EventCard = ({eventName, description, startTime, endTime, eventID, isCance
     .catch(console.error);
   }
 
-  const getUserAttendess = (userID) =>{
-    getUser(userID).then(user =>{
-      const name = user.firstname + ' ' + user.lastname;
-      setuserAttendee(name);
-    })
-  }
-
   useEffect(() => {
     getEventAttendees();
   }, [eventID])
 
-
-  useEffect(() => {
-    const userID = eventAttendee.map(user => user.id);
-    getUserAttendess(userID)
-  }, [eventAttendee])
-
+  eventAttendee.map(user =>{
+    console.log(user)
+  })
 
   const handleCancelOpen = () => setOpenCancel(true);
   const handleCancelClose = () => setOpenCancel(false);
