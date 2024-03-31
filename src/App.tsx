@@ -7,6 +7,7 @@ import SignUp from "./components/SignUp";
 import "./App.css";
 import Organizer from "./components/Organizer";
 import { getUser } from "./operations";
+import AdminPage from "./components/AdminPage";
 
 export default function App() {
   const [token, setToken] = useState(false);
@@ -31,8 +32,16 @@ export default function App() {
           <Route path="/signin" element={<SignIn setToken={setToken} />} />
           <Route path="/signup" element={<SignUp />} />
           {token ? <Route path="/home" element={<Home token={token} />} /> : ""}
-          {token ? <Route path="/organizer" element={<Organizer token={token} />}/> : ""}
-          
+          {token ? (
+            <Route path="/organizer" element={<Organizer token={token} />} />
+          ) : (
+            ""
+          )}
+          {token ? (
+            <Route path="/admin" element={<AdminPage token={token} />} />
+          ) : (
+            ""
+          )}
         </Routes>
       </BrowserRouter>
     </>
