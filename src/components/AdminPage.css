@@ -1,0 +1,72 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap");
+
+h1.section-header {
+  font-family: "Roboto";
+  font-size: 48px;
+  margin-bottom: 0px;
+}
+
+h2 {
+  font-family: "Roboto";
+  color: grey;
+  font-size: 48px;
+  margin-bottom: 0px;
+}
+
+h3.applicant-name {
+  font-family: "Roboto";
+}
+
+p.applicant-description {
+  font-family: "Roboto";
+}
+
+p.section-subheader {
+  color: grey;
+  font-family: "Roboto";
+  font-size: 18px;
+  font-weight: lighter;
+}
+
+.content-container {
+  margin: 45px 250px 45px 250px;
+}
+.applicant-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 380px;
+  height: auto;
+  padding: 20px 45px 50px 45px;
+  margin-top: 15px;
+  background-color: #d9d9d9;
+  border: 1px solid black;
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+.applicant-entry {
+  padding: 0px 30px 0px 30px;
+  margin-top: 20px;
+  height: 100px;
+  width: 100%;
+  display: flex;
+  background-color: white;
+  border-radius: 7px;
+  box-sizing: border-box;
+}
+.applicant-info {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  justify-content: center;
+  width: 80%;
+}
+.applicant-response {
+  width: 20%;
+  gap: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
