@@ -111,6 +111,27 @@ export const getUser = async (user_id: string) => {
   return data;
 };
 
+// fetch all user requesting for organizer role
+export const getOrganizerApplicants = async () => {
+  let { data, error } = await supabase
+    .from("organizers")
+    .select("*")
+    .eq("is_accepted", false)
+    .order("created_at", { ascending: false });
+  if (error) console.log("CRUD Error: " + error);
+  return data;
+};
+
+export const getAdministratorApplicants = async () => {
+  let { data, error } = await supabase
+    .from("administrators")
+    .select("*")
+    .eq("is_accepted", false)
+    .order("created_at", { ascending: false });
+  if (error) console.log("CRUD Error: " + error);
+  return data;
+};
+
 // fetch all notifications for the specified user
 export const getNotifs = async (user_id: string) => {
   let { data, error } = await supabase
