@@ -12,8 +12,7 @@ const EventCard = ({eventName, description, startTime, endTime, eventID, isCance
   const [eventStartDateEdit, setEventStartDateEdit] = useState(startTime);
   const [eventEndDateEdit, setEventEndDateEdit] = useState(endTime);
   const [eventAttendee, setEventAttendee] = useState([]);
-  const [userAttendee, setuserAttendee] = useState([]);
-
+  const [reviewed, setReviewed] = useState(false);
 
   const getEventAttendees = () => {
     getAttendees(eventID).then(attendee => {
@@ -24,11 +23,7 @@ const EventCard = ({eventName, description, startTime, endTime, eventID, isCance
 
   useEffect(() => {
     getEventAttendees();
-  }, [eventID])
-
-  eventAttendee.map(user =>{
-    console.log(user)
-  })
+  }, [eventID, reviewed])
 
   const handleCancelOpen = () => setOpenCancel(true);
   const handleCancelClose = () => setOpenCancel(false);
@@ -49,22 +44,25 @@ const EventCard = ({eventName, description, startTime, endTime, eventID, isCance
     updateList();
   };
 
-  const handleAcceptReview = () => {
-    console.log(eventAttendee);
-    //respondJoinRequest()
+  const handleAcceptReview = (id) => {
+    respondJoinRequest(id,eventID, true);
+    setReviewed(true);
+    updateList();
   };
 
-  const handleDeclineReview = () => {
-    //respondJoinRequest()
+  const handleDeclineReview = (id) => {
+    respondJoinRequest(id,eventID, false);
+    setReviewed(true);
+    updateList();
   };
   
   const handleEditSubmit = (event) => {
     event.preventDefault();
-    console.log(updateEvent(eventID, eventNameEdit, eventDescriptionEdit,eventStartDateEdit, eventEndDateEdit))
+    updateEvent(eventID, eventNameEdit, eventDescriptionEdit,eventStartDateEdit, eventEndDateEdit)
     handleEditClose();
     updateList();
   };
-
+ 
   return (
     <>
       <Card variant="outlined" sx={{ minWidth: 275, maxWidth: 350, margin: 2 }}>
@@ -131,22 +129,25 @@ const EventCard = ({eventName, description, startTime, endTime, eventID, isCance
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>User Name</TableCell>
+                  <TableCell>User</TableCell>
                   <TableCell align="center">Actions</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-              {!eventAttendee ? 
+              {eventAttendee.length == 0 ? 
                 <TableRow>
-                  <TableCell colSpan={2} align="center">No requests for this event</TableCell>
+                  <TableCell colSpan={2} align="center">
+                    No requests for this event</TableCell>
                 </TableRow> 
-                : eventAttendee.map((attendee, index) => (
+                : eventAttendee.map((user, index) => (
                   <TableRow key={index}>
-                    <TableCell>{attendee}</TableCell>
-                    <TableCell align="center">
-                      <Button variant="contained" color="primary" onClick={() => handleAcceptReview(attendee)}>Accept</Button>
-                      <Button variant="contained" color="secondary" onClick={() => handleDeclineReview(attendee)}>Decline</Button>
-                    </TableCell>
+                    <TableCell>{user.id}</TableCell>
+                    {user.is_accepted !== null ? 
+                      <TableCell align="center">User has been reviewed</TableCell>
+                      : <TableCell align="center">
+                        <Button variant="contained" color="primary" onClick={() => handleAcceptReview(user.user_id)}>Accept</Button>
+                        <Button variant="contained" color="secondary" onClick={() => handleDeclineReview(user.user_id)}>Decline</Button>
+                        </TableCell>}
                   </TableRow>
                 )) }
                 
